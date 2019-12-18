@@ -30,6 +30,7 @@ namespace Project3_MultimediaPlayer
         MediaPlayer _player = new MediaPlayer();
         DispatcherTimer _timer;
         int _lastIndex = -1;
+        List<int> _playedList = new List<int>(); 
         private IKeyboardMouseEvents _hook;
 
 
@@ -73,11 +74,6 @@ namespace Project3_MultimediaPlayer
 
             _player.Open(new Uri(filename, UriKind.Absolute));
 
-            System.Threading.Thread.Sleep(500);
-            //var duration = _player.NaturalDuration.TimeSpan;
-            //var testDuration = new TimeSpan(duration.Hours, duration.Minutes, duration.Seconds - 20);
-            //_player.Position = testDuration;
-
             _player.Play();
             _isPlaying = true;
             _timer.Start();
@@ -85,24 +81,145 @@ namespace Project3_MultimediaPlayer
 
         private void _player_MediaEnded(object sender, EventArgs e)
         {
-            _lastIndex++;
-            PlaySelectedIndex(_lastIndex);
+            int i = PlayNextSong(_lastIndex);
+            if (i == -1) return;
+            PlaySelectedIndex(i);
+        }
+
+        private int PlayNextSong(int currentPlay)
+        {
+            int nextsong = currentPlay;
+
+            if (Song.IsChecked == true) return nextsong;
+            if(nonShuffle.IsChecked == true)
+            {
+                nextsong = currentPlay + 1 ;
+                if (List.IsChecked == true)
+                {
+                    if(nextsong > _fullPaths.Count())
+                    {
+                        nextsong = -1;
+                    }
+                }
+                else if(Forever.IsChecked == true)
+                {
+                    if (nextsong > _fullPaths.Count())
+                    {
+                        nextsong = 0;
+                    }
+                }
+            }
+            else
+            {
+                if(List.IsChecked == true)
+                {
+
+                    if (_playedList.Count() == _fullPaths.Count())
+                    {
+                        nextsong = -1;
+                    }
+                    else
+                    {
+                        Random random = new Random();
+                        int playnext = 0;
+                        for (int j = 2; j > 0; j--)
+                        {
+                            playnext = random.Next(_fullPaths.Count());
+                            bool flag = isExistInList(_playedList, playnext);
+                            if (flag)
+                            {
+                                j--;
+                            }
+                            else
+                            {
+                                _playedList.Add(playnext);
+                                nextsong = playnext;
+                                return nextsong;
+                               
+                            }
+                        }
+                        
+                        for(int k=1;; k++)
+                        {
+                            int temp = playnext + k ^ 2;
+                            temp %= _fullPaths.Count();
+                            if (isExistInList(_playedList, temp) == false) 
+                            {
+                                _playedList.Add(playnext);
+                                nextsong = playnext;
+                                break;
+                            }
+                        }
+                        
+                        
+                    }
+                }
+                else if(Forever.IsChecked == true)
+                {
+                    if (_playedList.Count() == _fullPaths.Count())
+                    {
+                        _playedList.Clear();
+                    }
+                    Random random = new Random();
+                    int playnext = 0;
+                    for (int j = 2; j > 0; j--)
+                    {
+                        playnext = random.Next(_fullPaths.Count());
+                        bool flag = isExistInList(_playedList, playnext);
+                        if (flag)
+                        {
+                            j--;
+                        }
+                        else
+                        {
+                            _playedList.Add(playnext);
+                            nextsong = playnext;
+                            return nextsong;
+
+                        }
+                    }
+
+                    for (int k = 1; ; k++)
+                    {
+                        int temp = playnext + k ^ 2;
+                        temp %= _fullPaths.Count();
+                        if (isExistInList(_playedList, temp) == false)
+                        {
+                            _playedList.Add(playnext);
+                            nextsong = playnext;
+                            break;
+                        }
+                    }
+
+
+                    
+                }
+            }
+            return nextsong;
+        }
+
+        private bool isExistInList(List<int> list, int i)
+        {
+            foreach(var item in list)
+            {
+                if (item == i) return true;
+            }
+            return false;
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(500);
             if (_player.Source != null)
             {
                 var filename = _fullPaths[_lastIndex].Name;
                 var converter = new NameConverter();
                 var shortname = converter.Convert(filename, null, null, null);
 
-                var currentPos = _player.Position.ToString(@"mm\:ss");
-                var duration = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+                //var currentPos = _player.Position.ToString(@"mm\:ss");
+                //var duration = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
 
 
-                Title = String.Format($"{currentPos} / {duration} - {shortname}");
+                //Title = String.Format($"{currentPos} / {duration} - {shortname}");
             }
             else
                 Title = "No file selected...";
@@ -127,10 +244,15 @@ namespace Project3_MultimediaPlayer
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             var screen = new Microsoft.Win32.OpenFileDialog();
+            screen.Multiselect = true;
+            screen.Filter = "Sound files | *.mp3; *.wma; *.MP3";
             if (screen.ShowDialog() == true)
             {
-                var info = new FileInfo(screen.FileName);
-                _fullPaths.Add(info);
+                foreach (String file in screen.FileNames)
+                {
+                    var info = new FileInfo(file);
+                    _fullPaths.Add(info);
+                }
                 playlistListBox.ItemsSource = _fullPaths;
             }
         }
@@ -161,6 +283,11 @@ namespace Project3_MultimediaPlayer
             _hook.KeyUp -= KeyUp_hook;
             _hook.Dispose();
 
+        }
+
+        private void nextButton_Click(object sender, RoutedEventArgs e)
+        {
+            _player_MediaEnded(sender, e);
         }
     }
 }
