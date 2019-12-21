@@ -56,21 +56,24 @@ namespace Project3_MultimediaPlayer
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playlistListBox.SelectedIndex >= 0)
+            if (_fullPaths.Count() > 0)
             {
-                _lastIndex = playlistListBox.SelectedIndex;              
-                PlaySelectedIndex(_lastIndex);
-            }
-            else
-            {
-                _lastIndex = 0;
-                PlaySelectedIndex(_lastIndex);
+                if (playlistListBox.SelectedIndex >= 0)
+                {
+                    _lastIndex = playlistListBox.SelectedIndex;
+                    PlaySelectedIndex(_lastIndex);
+                }
+                else
+                {
+                    _lastIndex = 0;
+                    PlaySelectedIndex(_lastIndex);
+                }
             }
         }
 
         private void PlaySelectedIndex(int i)
         {
-            _playedList.Add(i);
+           
 
             string filename = _fullPaths[i].FullName;
             _player.Open(new Uri(filename, UriKind.Absolute));
@@ -97,7 +100,10 @@ namespace Project3_MultimediaPlayer
         {
             int nextsong = currentPlay;
 
-            if (Song.IsChecked == true) return nextsong;
+            if (Song.IsChecked == true)
+            {
+                if (_fullPaths != null) _fullPaths.Clear(); 
+                return nextsong; }
 
             if(nonShuffle.IsChecked == true)
             {
@@ -109,6 +115,7 @@ namespace Project3_MultimediaPlayer
                         nextsong = 0;
                     }
                 }
+                if(_fullPaths !=null) _fullPaths.Clear();
             }
             else
             {
@@ -119,11 +126,13 @@ namespace Project3_MultimediaPlayer
                     {
                         _playedList.Clear();
                     }
+                    _playedList.Add(currentPlay);
                     Random random = new Random();
                     int playnext = 0;
                     for (int j = 2; j >= 0; j--)
                     {
-                        playnext = random.Next(_fullPaths.Count());
+                        playnext = random.Next(1000);
+                        playnext %= _fullPaths.Count();
                         bool flag = isExistInList(_playedList, playnext);
                         if (flag)
                         {
