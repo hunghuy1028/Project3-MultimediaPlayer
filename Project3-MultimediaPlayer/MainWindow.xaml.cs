@@ -57,33 +57,43 @@ namespace Project3_MultimediaPlayer
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playlistListBox.SelectedIndex >= 0)
+            if (_fullPaths.Count() > 0)
             {
-                _lastIndex = playlistListBox.SelectedIndex;
-                PlaySelectedIndex(_lastIndex);
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("No file selected!");
+                if (playlistListBox.SelectedIndex >= 0)
+                {
+                    _lastIndex = playlistListBox.SelectedIndex;
+                    PlaySelectedIndex(_lastIndex);
+                }
+                else
+                {
+                    _lastIndex = 0;
+                    PlaySelectedIndex(_lastIndex);
+                }
             }
         }
 
         private void PlaySelectedIndex(int i)
         {
+           
 
             string filename = _fullPaths[i].FullName;
-
             _player.Open(new Uri(filename, UriKind.Absolute));
-
+            var converter = new NameConverter();
+            var shortname = converter.Convert(filename, null, null, null);
+        
+            nowPlay.Content = "Now playing: " + shortname;
             _player.Play();
             _isPlaying = true;
             _timer.Start();
+
         }
 
         private void _player_MediaEnded(object sender, EventArgs e)
         {
+            
             int i = PlayNextSong(_lastIndex);
-            if (i == -1) return;
+            _lastIndex = i;
+            
             PlaySelectedIndex(i);
         }
 
@@ -91,81 +101,39 @@ namespace Project3_MultimediaPlayer
         {
             int nextsong = currentPlay;
 
-            if (Song.IsChecked == true) return nextsong;
+            if (Song.IsChecked == true)
+            {
+                if (_fullPaths != null) _fullPaths.Clear(); 
+                return nextsong; }
+
             if(nonShuffle.IsChecked == true)
             {
-                nextsong = currentPlay + 1 ;
-                if (List.IsChecked == true)
+                nextsong = currentPlay + 1 ;     
+                if(Forever.IsChecked == true)
                 {
-                    if(nextsong > _fullPaths.Count())
-                    {
-                        nextsong = -1;
-                    }
-                }
-                else if(Forever.IsChecked == true)
-                {
-                    if (nextsong > _fullPaths.Count())
+                    if (nextsong >= _fullPaths.Count())
                     {
                         nextsong = 0;
                     }
                 }
+                if(_fullPaths !=null) _fullPaths.Clear();
             }
             else
             {
-                if(List.IsChecked == true)
-                {
-
-                    if (_playedList.Count() == _fullPaths.Count())
-                    {
-                        nextsong = -1;
-                    }
-                    else
-                    {
-                        Random random = new Random();
-                        int playnext = 0;
-                        for (int j = 2; j > 0; j--)
-                        {
-                            playnext = random.Next(_fullPaths.Count());
-                            bool flag = isExistInList(_playedList, playnext);
-                            if (flag)
-                            {
-                                j--;
-                            }
-                            else
-                            {
-                                _playedList.Add(playnext);
-                                nextsong = playnext;
-                                return nextsong;
-                               
-                            }
-                        }
-                        
-                        for(int k=1;; k++)
-                        {
-                            int temp = playnext + k ^ 2;
-                            temp %= _fullPaths.Count();
-                            if (isExistInList(_playedList, temp) == false) 
-                            {
-                                _playedList.Add(playnext);
-                                nextsong = playnext;
-                                break;
-                            }
-                        }
-                        
-                        
-                    }
-                }
-                else if(Forever.IsChecked == true)
+                
+                if(Forever.IsChecked == true)
                 {
                     if (_playedList.Count() == _fullPaths.Count())
                     {
                         _playedList.Clear();
                     }
+                    _playedList.Add(currentPlay);
                     Random random = new Random();
                     int playnext = 0;
-                    for (int j = 2; j > 0; j--)
+                    for (int j = 2; j >= 0; j--)
                     {
-                        playnext = random.Next(_fullPaths.Count());
+                        playnext = random.Next(1000);
+                        playnext %= _fullPaths.Count();
                         bool flag = isExistInList(_playedList, playnext);
                         if (flag)
                         {
@@ -182,7 +150,7 @@ namespace Project3_MultimediaPlayer
 
                     for (int k = 1; ; k++)
                     {
-                        int temp = playnext + k ^ 2;
+                        int temp = playnext + k;
                         temp %= _fullPaths.Count();
                         if (isExistInList(_playedList, temp) == false)
                         {
@@ -288,7 +256,8 @@ namespace Project3_MultimediaPlayer
 
         private void nextButton_Click(object sender, RoutedEventArgs e)
         {
-            _player_MediaEnded(sender, e);
+            if(_fullPaths.Count() > 0 && _lastIndex != -1)
+                _player_MediaEnded(sender, e);
         }
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
