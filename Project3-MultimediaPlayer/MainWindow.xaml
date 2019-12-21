@@ -21,11 +21,11 @@
         <Button Name="playButton" Width="80" Height="35" Content="Play" Click="playButton_Click" Canvas.Left="13" Canvas.Top="74"/>
         <Button Name="pauseButton" Width="80" Height="35" Content="Pause" Click="pauseButton_Click" Canvas.Left="119" Canvas.Top="74"/>
         <Button Name="nextButton" Width="80" Height="35" Content="Next" Click="nextButton_Click" Canvas.Left="219" Canvas.Top="74"/>
-        <Label Content="Time: " x:Name="Timer" Canvas.Left="39" Canvas.Top="189" ></Label>
+        <Label Content="Time: " x:Name="Timer" Canvas.Left="39" Canvas.Top="169" ></Label>
+        <Label Content="Now playing: " x:Name="nowPlay" Canvas.Left="39" Canvas.Top="189" ></Label>
         <RadioButton GroupName="Shuffle" Content="Non Shuffle" Name="nonShuffle" IsChecked="True" Canvas.Left="37" Canvas.Top="220"></RadioButton>
         <RadioButton GroupName="Shuffle" Content="Shuffle" Name="shuffle" Canvas.Left="37" Canvas.Top="240" ></RadioButton>
         <RadioButton GroupName="Repeat" Content="1 song" Name="Song" Canvas.Left="184" Canvas.Top="220" ></RadioButton>
-        <RadioButton GroupName="Repeat" Content="List" Name="List" IsChecked="True" Canvas.Left="184" Canvas.Top="240" ></RadioButton>
-        <RadioButton GroupName="Repeat" Content="Forever" Name="Forever" Canvas.Left="184" Canvas.Top="260" ></RadioButton>
+        <RadioButton GroupName="Repeat" Content="Forever" Name="Forever" IsChecked="True" Canvas.Left="184" Canvas.Top="240" ></RadioButton>
     </Canvas>
 </Window>
