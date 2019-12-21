@@ -249,6 +249,11 @@ namespace Project3_MultimediaPlayer
             if(_fullPaths.Count() > 0 && _lastIndex != -1)
                 _player_MediaEnded(sender, e);
         }
+
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            _player.Stop();
+        }
     }
 }
 

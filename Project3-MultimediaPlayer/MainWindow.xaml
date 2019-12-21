@@ -20,6 +20,7 @@
         </ListBox>
         <Button Name="playButton" Width="80" Height="35" Content="Play" Click="playButton_Click" Canvas.Left="13" Canvas.Top="74"/>
         <Button Name="pauseButton" Width="80" Height="35" Content="Pause" Click="pauseButton_Click" Canvas.Left="119" Canvas.Top="74"/>
+        <Button Name="stopButton" Width="80" Height="35" Content="Stop" Click="stopButton_Click" Canvas.Left="13" Canvas.Top="123"/>
         <Button Name="nextButton" Width="80" Height="35" Content="Next" Click="nextButton_Click" Canvas.Left="219" Canvas.Top="74"/>
         <Label Content="Time: " x:Name="Timer" Canvas.Left="39" Canvas.Top="169" ></Label>
         <Label Content="Now playing: " x:Name="nowPlay" Canvas.Left="39" Canvas.Top="189" ></Label>
