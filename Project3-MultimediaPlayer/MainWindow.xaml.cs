@@ -289,6 +289,11 @@ namespace Project3_MultimediaPlayer
         {
             _player_MediaEnded(sender, e);
         }
+
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            _player.Stop();
+        }
     }
 }
 
