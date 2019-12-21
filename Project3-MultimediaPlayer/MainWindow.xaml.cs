@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Project3_MultimediaPlayer
 {
@@ -293,6 +294,23 @@ namespace Project3_MultimediaPlayer
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
             _player.Stop();
+        }
+
+        private void newPlayList_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var newplaylist = playlistListBox.SelectedItems;
+
+            var filename = "playlist1.txt";
+            var writer = new StreamWriter(filename);
+
+            if(newplaylist!= null)
+            {
+                foreach(var item in newplaylist)
+                {
+                    writer.WriteLine(item);
+                }
+            }
+            writer.Close();
         }
     }
 }
