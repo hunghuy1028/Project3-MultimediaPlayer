@@ -41,7 +41,7 @@ namespace Project3_MultimediaPlayer
             _player.MediaEnded += _player_MediaEnded;
             _player.MediaOpened += _player_MediaOpened;
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Interval = TimeSpan.FromMilliseconds(500);
 
             _timer.Tick += timer_Tick;
 
@@ -90,7 +90,13 @@ namespace Project3_MultimediaPlayer
                 _player.Play();
                 _isPlaying = true;
                 _timer.Start();
-            }catch
+                System.Threading.Thread.Sleep(600);
+                if (_player.NaturalDuration.HasTimeSpan)
+                {
+                    totalTime.Content = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+                }
+            }
+            catch
             {
                 MessageBox.Show("Some errors occurred. Close app and try again!", "Sorry about that");
             }
@@ -165,9 +171,6 @@ namespace Project3_MultimediaPlayer
                             break;
                         }
                     }
-
-
-                    
                 }
             }
             return nextsong;
@@ -184,16 +187,22 @@ namespace Project3_MultimediaPlayer
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (_player.Source != null)
+            if (_player.Source != null && _player.NaturalDuration.HasTimeSpan)
             {
                 var filename = _fullPaths[_lastIndex].Name;
                 var converter = new NameConverter();
                 var shortname = converter.Convert(filename, null, null, null);
 
-                //var currentPos = _player.Position.ToString(@"mm\:ss");
+                var currentPos = _player.Position.TotalSeconds;
+               
+                
+                progessMusic.Minimum = 0;
+                progessMusic.Maximum = (int)_player.NaturalDuration.TimeSpan.TotalSeconds;
+
+                progessMusic.Value = currentPos;
                 //var duration = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
 
-
+                timeNow.Content = $"{_player.Position.ToString(@"mm\:ss")}";
                 //Title = String.Format($"{currentPos} / {duration} - {shortname}");
             }
             else
@@ -286,6 +295,20 @@ namespace Project3_MultimediaPlayer
                 }
             }
             writer.Close();
+        }
+
+        private void progessMusic_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            var pos = Convert.ToInt32(progessMusic.Value);
+            var newDuration = new TimeSpan(0, 0, pos);
+            _player.Position = newDuration;
+        }
+
+        private void progessMusic_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var pos = Convert.ToInt32(progessMusic.Value);
+            var newDuration = new TimeSpan(0, 0, pos);
+            _player.Position = newDuration;
         }
     }
 }

@@ -11,7 +11,7 @@
     </Window.Resources>
     <Canvas>
         <Button Name="addButton" Width="80" Height="35" Content="Browse..." Click="addButton_Click"/>
-        <ListBox Name="playlistListBox" SelectionMode="Extended" Width="300" Height="250" Canvas.Left="332" Canvas.Top="36">
+        <ListBox Name="playlistListBox" SelectionMode="Extended" Width="300" Height="250" Canvas.Left="434" Canvas.Top="34">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name, Converter={StaticResource converter}}"/>
@@ -26,12 +26,15 @@
         <Button Name="newPlayList_Button" Width="80" Height="35" Content="New Playlist" Click="newPlayList_Button_Click" Canvas.Left="11" Canvas.Top="290"/>
 
 
-        <Label Content="Time: " x:Name="Timer" Canvas.Left="39" Canvas.Top="189" ></Label>
-
-        <Label Content="Now playing: " x:Name="nowPlay" Canvas.Left="39" Canvas.Top="189" ></Label>
-        <RadioButton GroupName="Shuffle" Content="Non Shuffle" Name="nonShuffle" IsChecked="True" Canvas.Left="37" Canvas.Top="220"></RadioButton>
-        <RadioButton GroupName="Shuffle" Content="Shuffle" Name="shuffle" Canvas.Left="37" Canvas.Top="240" ></RadioButton>
-        <RadioButton GroupName="Repeat" Content="1 song" Name="Song" Canvas.Left="184" Canvas.Top="220" ></RadioButton>
-        <RadioButton GroupName="Repeat" Content="Forever" Name="Forever" IsChecked="True" Canvas.Left="184" Canvas.Top="240" ></RadioButton>
+        <Label Content="Time: " x:Name="Timer" Canvas.Left="39" Canvas.Top="170" ></Label>
+        <!--<ProgressBar x:Name="progessMusic" Height="25" Width="173" Canvas.Left="126" Canvas.Top="170"></ProgressBar>-->
+        <Label x:Name="timeNow" Content="" Canvas.Left="75" Canvas.Top="169"></Label>
+        <Label x:Name="totalTime" Content="" Canvas.Left="334" Canvas.Top="169"></Label>
+        <Slider x:Name="progessMusic" Height="25" Width="200" Canvas.Left="119" Canvas.Top="175" Thumb.DragCompleted="progessMusic_DragCompleted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
+        <Label Content="Now playing: " x:Name="nowPlay" Canvas.Left="39" Canvas.Top="195" ></Label>
+        <RadioButton GroupName="Shuffle" Content="Non Shuffle" Name="nonShuffle" IsChecked="True" Canvas.Left="37" Canvas.Top="230"></RadioButton>
+        <RadioButton GroupName="Shuffle" Content="Shuffle" Name="shuffle" Canvas.Left="37" Canvas.Top="250" ></RadioButton>
+        <RadioButton GroupName="Repeat" Content="1 song" Name="Song" Canvas.Left="184" Canvas.Top="230" ></RadioButton>
+        <RadioButton GroupName="Repeat" Content="Forever" Name="Forever" IsChecked="True" Canvas.Left="184" Canvas.Top="250" ></RadioButton>
     </Canvas>
 </Window>
