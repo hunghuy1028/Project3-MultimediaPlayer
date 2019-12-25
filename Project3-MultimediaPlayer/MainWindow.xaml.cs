@@ -66,7 +66,12 @@ namespace Project3_MultimediaPlayer
                 }
                 else
                 {
-                    _lastIndex = 0;
+                    if (shuffle.IsChecked == true)
+                    {
+                        var random = new Random();
+                        _lastIndex = random.Next(_fullPaths.Count());
+                    }
+                    else _lastIndex = 0;
                     PlaySelectedIndex(_lastIndex);
                 }
             }
@@ -74,17 +79,21 @@ namespace Project3_MultimediaPlayer
 
         private void PlaySelectedIndex(int i)
         {
-           
+            try
+            {
+                string filename = _fullPaths[i].FullName;
+                _player.Open(new Uri(filename, UriKind.Absolute));
+                var converter = new NameConverter();
+                var shortname = converter.Convert(filename, null, null, null);
 
-            string filename = _fullPaths[i].FullName;
-            _player.Open(new Uri(filename, UriKind.Absolute));
-            var converter = new NameConverter();
-            var shortname = converter.Convert(filename, null, null, null);
-        
-            nowPlay.Content = "Now playing: " + shortname;
-            _player.Play();
-            _isPlaying = true;
-            _timer.Start();
+                nowPlay.Content = "Now playing: " + shortname;
+                _player.Play();
+                _isPlaying = true;
+                _timer.Start();
+            }catch
+            {
+                MessageBox.Show("Some errors occurred. Close app and try again!", "Sorry about that");
+            }
 
         }
 
@@ -103,8 +112,10 @@ namespace Project3_MultimediaPlayer
 
             if (Song.IsChecked == true)
             {
-                if (_fullPaths != null) _fullPaths.Clear(); 
-                return nextsong; }
+                if (_playedList.Count() > 0) 
+                    _playedList.Clear(); 
+                return currentPlay;
+            }
 
             if(nonShuffle.IsChecked == true)
             {
@@ -116,46 +127,41 @@ namespace Project3_MultimediaPlayer
                         nextsong = 0;
                     }
                 }
-                if(_fullPaths !=null) _fullPaths.Clear();
+                if(_playedList.Count() > 0) _playedList.Clear();
             }
             else
             {
                 
                 if(Forever.IsChecked == true)
                 {
+                    _playedList.Add(currentPlay);
+
                     if (_playedList.Count() == _fullPaths.Count())
                     {
                         _playedList.Clear();
                     }
-                    _playedList.Add(currentPlay);
-                    Random random = new Random();
-                    int playnext = 0;
+
+                    
                     for (int j = 2; j >= 0; j--)
                     {
-                        playnext = random.Next(1000);
+                        Random random = new Random();
+                        int playnext = random.Next(100);
                         playnext %= _fullPaths.Count();
                         bool flag = isExistInList(_playedList, playnext);
-                        if (flag)
+                        if (!flag && playnext != currentPlay)
                         {
-                            j--;
-                        }
-                        else
-                        {
-                            _playedList.Add(playnext);
                             nextsong = playnext;
                             return nextsong;
-
                         }
                     }
 
                     for (int k = 1; ; k++)
                     {
-                        int temp = playnext + k;
+                        int temp = currentPlay + k^2;
                         temp %= _fullPaths.Count();
                         if (isExistInList(_playedList, temp) == false)
                         {
-                            _playedList.Add(playnext);
-                            nextsong = playnext;
+                            nextsong = temp;
                             break;
                         }
                     }
