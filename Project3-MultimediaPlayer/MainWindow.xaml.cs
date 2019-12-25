@@ -90,11 +90,7 @@ namespace Project3_MultimediaPlayer
                 _player.Play();
                 _isPlaying = true;
                 _timer.Start();
-                System.Threading.Thread.Sleep(600);
-                if (_player.NaturalDuration.HasTimeSpan)
-                {
-                    totalTime.Content = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
-                }
+                
             }
             catch
             {
@@ -185,8 +181,9 @@ namespace Project3_MultimediaPlayer
             return false;
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void  timer_Tick(object sender, EventArgs e)
         {
+            //await Task.Run(() => _player.NaturalDuration.TimeSpan);
             if (_player.Source != null && _player.NaturalDuration.HasTimeSpan)
             {
                 var filename = _fullPaths[_lastIndex].Name;
@@ -197,16 +194,13 @@ namespace Project3_MultimediaPlayer
                
                 
                 progessMusic.Minimum = 0;
-                progessMusic.Maximum = (int)_player.NaturalDuration.TimeSpan.TotalSeconds;
-
+                progessMusic.Maximum = _player.NaturalDuration.TimeSpan.TotalSeconds;
                 progessMusic.Value = currentPos;
-                //var duration = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
 
-                timeNow.Content = $"{_player.Position.ToString(@"mm\:ss")}";
-                //Title = String.Format($"{currentPos} / {duration} - {shortname}");
+
+                timeNow.Content = _player.Position.ToString(@"mm\:ss");
+                totalTime.Content = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
             }
-            else
-                Title = "No file selected...";
         }
 
         bool _isPlaying = false;

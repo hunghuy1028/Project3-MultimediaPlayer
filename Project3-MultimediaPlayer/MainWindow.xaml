@@ -29,7 +29,7 @@
         <Label Content="Time: " x:Name="Timer" Canvas.Left="39" Canvas.Top="170" ></Label>
         <!--<ProgressBar x:Name="progessMusic" Height="25" Width="173" Canvas.Left="126" Canvas.Top="170"></ProgressBar>-->
         <Label x:Name="timeNow" Content="" Canvas.Left="75" Canvas.Top="169"></Label>
-        <Label x:Name="totalTime" Content="" Canvas.Left="334" Canvas.Top="169"></Label>
+        <Label x:Name="totalTime" Content="" Canvas.Left="334" Canvas.Top="169" ></Label>
         <Slider x:Name="progessMusic" Height="25" Width="200" Canvas.Left="119" Canvas.Top="175" Thumb.DragCompleted="progessMusic_DragCompleted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
         <Label Content="Now playing: " x:Name="nowPlay" Canvas.Left="39" Canvas.Top="195" ></Label>
         <RadioButton GroupName="Shuffle" Content="Non Shuffle" Name="nonShuffle" IsChecked="True" Canvas.Left="37" Canvas.Top="230"></RadioButton>
