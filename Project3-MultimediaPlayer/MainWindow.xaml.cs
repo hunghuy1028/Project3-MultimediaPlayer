@@ -33,7 +33,8 @@ namespace Project3_MultimediaPlayer
         int _lastIndex = -1;
         List<int> _playedList = new List<int>(); 
         private IKeyboardMouseEvents _hook;
-
+        int ShuffleMode = 0; //0: nonShuffle, 1:Shuffle
+        int RepeatMode = 0; //0: Forever, 1: 1 song
 
         public MainWindow()
         {
@@ -66,7 +67,7 @@ namespace Project3_MultimediaPlayer
                 }
                 else
                 {
-                    if (shuffle.IsChecked == true)
+                    if (ShuffleMode == 1)
                     {
                         var random = new Random();
                         _lastIndex = random.Next(_fullPaths.Count());
@@ -88,7 +89,7 @@ namespace Project3_MultimediaPlayer
 
                 shortname = shortname.Substring(shortname.LastIndexOf("\\")+1);
 
-                nowPlay.Content = "Now playing: " + shortname;
+                nameofSong.Content = shortname;
                 _player.Play();
                 _isPlaying = true;
                 _timer.Start();
@@ -114,17 +115,17 @@ namespace Project3_MultimediaPlayer
         {
             int nextsong = currentPlay;
 
-            if (Song.IsChecked == true)
+            if (RepeatMode == 1) // repeat 1 song
             {
                 if (_playedList.Count() > 0) 
                     _playedList.Clear(); 
                 return currentPlay;
             }
 
-            if(nonShuffle.IsChecked == true)
+            if(ShuffleMode == 0) //non shuffle
             {
                 nextsong = currentPlay + 1 ;     
-                if(Forever.IsChecked == true)
+                if(RepeatMode == 0) //repeat forever
                 {
                     if (nextsong >= _fullPaths.Count())
                     {
@@ -133,10 +134,10 @@ namespace Project3_MultimediaPlayer
                 }
                 if(_playedList.Count() > 0) _playedList.Clear();
             }
-            else
+            else // shuffle
             {
                 
-                if(Forever.IsChecked == true)
+                if(ShuffleMode == 1)
                 {
                     _playedList.Add(currentPlay);
 
@@ -309,6 +310,35 @@ namespace Project3_MultimediaPlayer
             var pos = Convert.ToInt32(progessMusic.Value);
             var newDuration = new TimeSpan(0, 0, pos);
             _player.Position = newDuration;
+        }
+
+        private void shuffleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(ShuffleMode == 0) //current: non shuffle
+            {
+                ShuffleMode = 1; //switch to shuffle
+                //changeimage
+            }
+            else //current: shuffle
+            {
+                ShuffleMode = 0; // switch to nonShuffle
+                //changeimage
+            }
+        }
+
+        private void repeatButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(RepeatMode == 0 ) //current: repeat forever
+            {
+                RepeatMode = 1; // switch to repeat 1 song
+
+                //change image
+            }
+            else // current: repeat 1 song
+            {
+                RepeatMode = 0; //switch to repeat forever
+                //change image
+            }
         }
     }
 }

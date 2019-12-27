@@ -100,5 +100,25 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\backward.png" />
+    <Resource Include="Images\music.png" />
+    <Resource Include="Images\pause.png" />
+    <Resource Include="Images\play.png" />
+    <Resource Include="Images\semiquaver.png" />
+    <Resource Include="Images\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\compact-disc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\add.png" />
+    <Resource Include="Images\plus.png" />
+    <Resource Include="Images\repeat.png" />
+    <Resource Include="Images\shuffle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\forward.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

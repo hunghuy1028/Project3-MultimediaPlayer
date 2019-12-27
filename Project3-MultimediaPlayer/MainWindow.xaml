@@ -9,32 +9,94 @@
     <Window.Resources>
         <local:NameConverter x:Key="converter"/>
     </Window.Resources>
-    <Canvas>
-        <Button Name="addButton" Width="80" Height="35" Content="Browse..." Click="addButton_Click"/>
-        <ListBox Name="playlistListBox" SelectionMode="Extended" Width="300" Height="250" Canvas.Left="434" Canvas.Top="34">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+            <Button Width="Auto" Height="Auto" Click="addButton_Click" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/plus.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    <Label Content="Browser..."></Label>
+                </StackPanel>
+            </Button>
+            <Button Width="Auto" Height="Auto" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/add.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    <Label Content="Add Playlist"></Label>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <ListBox Margin="5 5 5 5" Name="playlistListBox" SelectionMode="Extended" Grid.Row="1" Grid.Column="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name, Converter={StaticResource converter}}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Name="playButton" Width="80" Height="35" Content="Play" Click="playButton_Click" Canvas.Left="13" Canvas.Top="74"/>
-        <Button Name="pauseButton" Width="80" Height="35" Content="Pause" Click="pauseButton_Click" Canvas.Left="119" Canvas.Top="74"/>
-        <Button Name="stopButton" Width="80" Height="35" Content="Stop" Click="stopButton_Click" Canvas.Left="13" Canvas.Top="123"/>
-        <Button Name="nextButton" Width="80" Height="35" Content="Next" Click="nextButton_Click" Canvas.Left="219" Canvas.Top="74"/>
 
-        <Button Name="newPlayList_Button" Width="80" Height="35" Content="New Playlist" Click="newPlayList_Button_Click" Canvas.Left="11" Canvas.Top="290"/>
+        <Image Margin="10 10 10 10" Grid.Column="2" Grid.Row="1" 
+               Source="Images/compact-disc.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+
+            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="50"
+                   Source="Images/music.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+
+            <Label Grid.Row="0" Grid.Column="1" x:Name="nameofSong" FontSize="20" Content=""></Label>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="nameofArtist" FontSize="16" Content="" FontWeight="Bold"></Label>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center">
+                <Button Margin="8 8 8 8" Click="repeatButton_Click"
+                        Background="Transparent" BorderThickness="0">
+                    <Image x:Name="repeatImage" Margin="5 5 5 5" Source="Images/repeat.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                </Button>
+                <Button Margin="8 8 8 8" Background="Transparent" BorderThickness="0">
+                    <Image Margin="3 3 3 3" Source="Images/backward.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                </Button>
+                <Button Margin="8 8 8 8" Click="playButton_Click"
+                        Background="Transparent" BorderThickness="0" >
+                    <Image Margin="3 3 3 3" Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                </Button>
+                <Button Margin="8 8 8 8" Click="stopButton_Click"
+                        Background="Transparent" BorderThickness="0">
+                    <Image Margin="3 3 3 3" Source="Images/stop.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                </Button>
+                <Button Margin="8 8 8 8" Click="nextButton_Click"
+                        Background="Transparent" BorderThickness="0">
+                    <Image Margin="3 3 3 3" Source="Images/forward.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                </Button>
+                <Button Margin="8 8 8 8" Click="shuffleButton_Click"
+                        Background="Transparent" BorderThickness="0">
+                    <Image x:Name="shuffleImage" Margin="5 5 5 5" Source="Images/shuffle.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                </Button>
+            </StackPanel>
+
+            <DockPanel LastChildFill="True" Grid.Row="1" Grid.Column="2">
+                <Label Margin="0 1 0 0" Content="00:00" DockPanel.Dock="Left" x:Name="timeNow"></Label>
+                <Label Margin="0 1 0 0" Content="05:00" DockPanel.Dock="Right" x:Name="totalTime"></Label>
+                <Slider Margin="10 5 10 5" x:Name="progessMusic"
+                        Thumb.DragCompleted="progessMusic_DragCompleted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
+            </DockPanel>
+        </Grid>
 
 
-        <Label Content="Time: " x:Name="Timer" Canvas.Left="39" Canvas.Top="170" ></Label>
-        <!--<ProgressBar x:Name="progessMusic" Height="25" Width="173" Canvas.Left="126" Canvas.Top="170"></ProgressBar>-->
-        <Label x:Name="timeNow" Content="" Canvas.Left="75" Canvas.Top="169"></Label>
-        <Label x:Name="totalTime" Content="" Canvas.Left="334" Canvas.Top="169" ></Label>
-        <Slider x:Name="progessMusic" Height="25" Width="200" Canvas.Left="119" Canvas.Top="175" Thumb.DragCompleted="progessMusic_DragCompleted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
-        <Label Content="Now playing: " x:Name="nowPlay" Canvas.Left="39" Canvas.Top="195" ></Label>
-        <RadioButton GroupName="Shuffle" Content="Non Shuffle" Name="nonShuffle" IsChecked="True" Canvas.Left="37" Canvas.Top="230"></RadioButton>
-        <RadioButton GroupName="Shuffle" Content="Shuffle" Name="shuffle" Canvas.Left="37" Canvas.Top="250" ></RadioButton>
-        <RadioButton GroupName="Repeat" Content="1 song" Name="Song" Canvas.Left="184" Canvas.Top="230" ></RadioButton>
-        <RadioButton GroupName="Repeat" Content="Forever" Name="Forever" IsChecked="True" Canvas.Left="184" Canvas.Top="250" ></RadioButton>
-    </Canvas>
+    </Grid>
 </Window>
