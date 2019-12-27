@@ -84,7 +84,9 @@ namespace Project3_MultimediaPlayer
                 string filename = _fullPaths[i].FullName;
                 _player.Open(new Uri(filename, UriKind.Absolute));
                 var converter = new NameConverter();
-                var shortname = converter.Convert(filename, null, null, null);
+                var shortname = converter.Convert(filename, null, null, null).ToString();
+
+                shortname = shortname.Substring(shortname.LastIndexOf("\\")+1);
 
                 nowPlay.Content = "Now playing: " + shortname;
                 _player.Play();
@@ -172,7 +174,7 @@ namespace Project3_MultimediaPlayer
             return nextsong;
         }
 
-        private bool isExistInList(List<int> list, int i)
+        private bool isExistInList(List <int> list, int i)
         {
             foreach(var item in list)
             {
@@ -187,12 +189,13 @@ namespace Project3_MultimediaPlayer
             if (_player.Source != null && _player.NaturalDuration.HasTimeSpan)
             {
                 var filename = _fullPaths[_lastIndex].Name;
-                var converter = new NameConverter();
-                var shortname = converter.Convert(filename, null, null, null);
+                //var converter = new NameConverter();
+                //var shortname = converter.Convert(filename, null, null, null);
 
                 var currentPos = _player.Position.TotalSeconds;
                
-                
+               
+
                 progessMusic.Minimum = 0;
                 progessMusic.Maximum = _player.NaturalDuration.TimeSpan.TotalSeconds;
                 progessMusic.Value = currentPos;
@@ -226,12 +229,15 @@ namespace Project3_MultimediaPlayer
             screen.Filter = "Sound files | *.mp3; *.wma; *.MP3";
             if (screen.ShowDialog() == true)
             {
-                foreach (String file in screen.FileNames)
+                foreach (var file in screen.FileNames)
                 {
                     var info = new FileInfo(file);
-                    _fullPaths.Add(info);
+                    if (!_fullPaths.Contains(info))
+                    {
+                        _fullPaths.Add(info);
+                    }
                 }
-                playlistListBox.ItemsSource = _fullPaths;
+                playlistListBox.ItemsSource = _fullPaths ;
             }
         }
 

@@ -13,12 +13,13 @@ namespace Project3_MultimediaPlayer
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var info = value as string;
-            var tokens = info.Split(new string[] { "." },
-                StringSplitOptions.None);
-            // Noi-buon-cua-anh.mp3
-            // ["Noi-buon-cua-anh", "mp3"]
+            //var tokens = info.Split(new string[] { "." },
+            //    StringSplitOptions.None);
+            //return tokens[0];
 
-            return tokens[0];
+            var index = info.LastIndexOf(".");
+            var token = info.Substring(0, index);
+            return token;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
