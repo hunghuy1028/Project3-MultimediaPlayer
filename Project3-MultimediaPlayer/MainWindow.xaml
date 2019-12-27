@@ -43,7 +43,7 @@
             </Button>
         </StackPanel>
 
-        <ListBox Margin="5 5 5 5" Name="playlistListBox" SelectionMode="Extended" Grid.Row="1" Grid.Column="0">
+        <ListBox Margin="5 5 5 5" Name="playlistListBox" SelectionMode="Extended" SelectionChanged="playlistListBox_SelectionChanged" Grid.Row="1" Grid.Column="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name, Converter={StaticResource converter}}"/>
@@ -76,12 +76,12 @@
                         Background="Transparent" BorderThickness="0">
                     <Image x:Name="repeatImage" Margin="5 5 5 5" Source="Images/repeat.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
                 </Button>
-                <Button Margin="8 8 8 8" Background="Transparent" BorderThickness="0">
+                <Button Name="previous_Button" Click="previous_Button_Click" Margin="8 8 8 8" Background="Transparent" BorderThickness="0">
                     <Image Margin="3 3 3 3" Source="Images/backward.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
                 </Button>
                 <Button Margin="8 8 8 8" Click="playButton_Click"
                         Background="Transparent" BorderThickness="0" >
-                    <Image Margin="3 3 3 3" Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    <Image Name="PlayPause_Image" Margin="3 3 3 3" Source="Images/play.png" RenderOptions.BitmapScalingMode="HighQuality"></Image>
                 </Button>
                 <Button Margin="8 8 8 8" Click="stopButton_Click"
                         Background="Transparent" BorderThickness="0">
