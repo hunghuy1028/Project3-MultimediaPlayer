@@ -181,6 +181,7 @@ namespace Project3_MultimediaPlayer
                         if (!flag && playnext != currentPlay)
                         {
                             nextsong = playnext;
+                            playlistListBox.SelectedIndex = nextsong;
                             return nextsong;
                         }
                     }
