@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project3_MultimediaPlayer"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
         <local:NameConverter x:Key="converter"/>
@@ -27,10 +29,16 @@
                     <Label Content="Browser..."></Label>
                 </StackPanel>
             </Button>
-            <Button Width="Auto" Height="Auto" >
+            <Button Name="AddPlayList_Button" Click="AddPlayList_Button_Click" Width="Auto" Height="Auto" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="Images/add.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
                     <Label Content="Add Playlist"></Label>
+                </StackPanel>
+            </Button>
+            <Button Name="LoadPlayList_Button" Click="LoadPlayList_Button_Click" Width="Auto" Height="Auto" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/add.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    <Label Content="Load Playlist"></Label>
                 </StackPanel>
             </Button>
         </StackPanel>
@@ -96,7 +104,5 @@
                         Thumb.DragCompleted="progessMusic_DragCompleted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
             </DockPanel>
         </Grid>
-
-
     </Grid>
 </Window>
