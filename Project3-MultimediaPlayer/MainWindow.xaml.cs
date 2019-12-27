@@ -88,7 +88,7 @@ namespace Project3_MultimediaPlayer
                 string filename = _fullPaths[i].FullName;
                 _player.Open(new Uri(filename, UriKind.Absolute));
 
-                shortname = shortname.Substring(shortname.LastIndexOf("\\") + 1);
+                //shortname = shortname.Substring(shortname.LastIndexOf("\\") + 1);
                 var detailsong = TagLib.File.Create(filename);
                 var artists = detailsong.Tag.Artists;
                 //var picture = detailsong.Tag.Pictures[0];
@@ -121,7 +121,6 @@ namespace Project3_MultimediaPlayer
 
             }
             catch
-            }catch
             {
                 MessageBox.Show("Some errors occurred. Close app and try again!", "Sorry about that");
             }
