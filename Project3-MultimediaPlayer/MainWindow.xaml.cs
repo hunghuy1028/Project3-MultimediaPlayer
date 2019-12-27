@@ -317,12 +317,12 @@ namespace Project3_MultimediaPlayer
             if(ShuffleMode == 0) //current: non shuffle
             {
                 ShuffleMode = 1; //switch to shuffle
-                //changeimage
+                shuffleImage.Source = new BitmapImage(new Uri(@"/Images/shuffle1.png", UriKind.Relative));
             }
             else //current: shuffle
             {
                 ShuffleMode = 0; // switch to nonShuffle
-                //changeimage
+                shuffleImage.Source = new BitmapImage(new Uri(@"/Images/shuffle.png", UriKind.Relative));
             }
         }
 
@@ -332,12 +332,12 @@ namespace Project3_MultimediaPlayer
             {
                 RepeatMode = 1; // switch to repeat 1 song
 
-                //change image
+                repeatImage.Source = new BitmapImage(new Uri(@"/Images/repeat1.png", UriKind.Relative));
             }
             else // current: repeat 1 song
             {
                 RepeatMode = 0; //switch to repeat forever
-                //change image
+                repeatImage.Source = new BitmapImage(new Uri(@"/Images/repeat.png", UriKind.Relative));
             }
         }
     }
