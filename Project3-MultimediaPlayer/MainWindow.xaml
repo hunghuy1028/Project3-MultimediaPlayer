@@ -51,7 +51,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Image Margin="10 10 10 10" Grid.Column="2" Grid.Row="1" 
+        <Image Margin="10 10 10 10" Grid.Column="2" Grid.Row="1" x:Name="imageofSong"
                Source="Images/compact-disc.png" RenderOptions.BitmapScalingMode="HighQuality"/>
 
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">

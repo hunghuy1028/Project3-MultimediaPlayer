@@ -21,6 +21,7 @@ using System.Windows.Threading;
 using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+using TagLib;
 
 namespace Project3_MultimediaPlayer
 {
@@ -79,30 +80,54 @@ namespace Project3_MultimediaPlayer
             }
         }
 
+
         private void PlaySelectedIndex(int i)
         {
             try
             {
                 string filename = _fullPaths[i].FullName;
                 _player.Open(new Uri(filename, UriKind.Absolute));
-                var converter = new NameConverter();
-                var shortname = converter.Convert(filename, null, null, null).ToString();
 
                 shortname = shortname.Substring(shortname.LastIndexOf("\\") + 1);
+                var detailsong = TagLib.File.Create(filename);
+                var artists = detailsong.Tag.Artists;
+                //var picture = detailsong.Tag.Pictures[0];
+                try
+                {
+                    var image = detailsong.Tag.Pictures[0];
+                    MemoryStream ms = new MemoryStream(image.Data.Data);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = ms;
+                    bitmap.EndInit();
+                    imageofSong.Source = bitmap;
+                }
+                catch{
+                    imageofSong.Source = new BitmapImage(new Uri(@"/Images/compact-disc.png", UriKind.Relative));
+                }
 
-                nameofSong.Content = shortname;
+                string artist = "";
+                foreach (var item in artists)
+                {
+                    artist = artist + item + " ";
+                }
+
+                nameofSong.Content = _fullPaths[i].Name;
+                nameofArtist.Content = artist;
                 _player.Play();
                 _isPlaying = true;
                 _timer.Start();
 
             }
             catch
+            }catch
             {
                 MessageBox.Show("Some errors occurred. Close app and try again!", "Sorry about that");
             }
-
         }
-
+            
+            
         private void _player_MediaEnded(object sender, EventArgs e)
         {
 
