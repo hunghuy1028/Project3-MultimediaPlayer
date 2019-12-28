@@ -47,7 +47,7 @@ namespace Project3_MultimediaPlayer
             _player.MediaEnded += _player_MediaEnded;
             _player.MediaOpened += _player_MediaOpened;
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(250);
+            _timer.Interval = TimeSpan.FromMilliseconds(750);
 
             _timer.Tick += timer_Tick;
 
@@ -387,11 +387,22 @@ namespace Project3_MultimediaPlayer
 
         private void KeyUp_hook(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if (e.Control && e.Shift && (e.KeyCode == Keys.E))
+            RoutedEventArgs a = new RoutedEventArgs();
+            if (e.Control && e.Shift && (e.KeyCode == Keys.A)) //next song
             {
-                //System.Windows.MessageBox.Show("Ctrl + Shift + E pressed"); ;
-                _lastIndex++;
-                PlaySelectedIndex(_lastIndex);
+                nextButton_Click(sender, a);
+            }
+            if (e.Control && e.Shift && (e.KeyCode == Keys.S)) //play
+            {
+                playButton_Click(sender, a);
+            }
+            if (e.Control && e.Shift && (e.KeyCode == Keys.Q)) //previous song
+            {
+                previous_Button_Click(sender, a);
+            }
+            if (e.Control && e.Shift && (e.KeyCode == Keys.W)) //stop
+            {
+                stopButton_Click(sender, a);
             }
         }
 
