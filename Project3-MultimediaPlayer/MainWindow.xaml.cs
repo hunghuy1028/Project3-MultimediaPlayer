@@ -44,7 +44,7 @@ namespace Project3_MultimediaPlayer
             _player.MediaEnded += _player_MediaEnded;
             _player.MediaOpened += _player_MediaOpened;
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(500);
+            _timer.Interval = TimeSpan.FromMilliseconds(250);
 
             _timer.Tick += timer_Tick;
 
@@ -58,19 +58,26 @@ namespace Project3_MultimediaPlayer
 
         }
 
-        bool firtTimePlay = true;
+        bool firstTimePlay = true;
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            if (playlistListBox.SelectedIndex != _lastIndex || firtTimePlay == true)
+            if (playlistListBox.SelectedIndex != _lastIndex || firstTimePlay == true)
             {
-                firtTimePlay = false;
+                firstTimePlay = false;
                 PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));
                 if (_fullPaths.Count() > 0)
                 {
                     if (playlistListBox.SelectedIndex >= 0)
                     {
                         _lastIndex = playlistListBox.SelectedIndex;
-                        PlaySelectedIndex(_lastIndex);
+                        if (_player.Position.TotalSeconds > 0)
+                        {
+                            _player.Play();
+                            _isPlaying = true;
+                            _timer.Start();
+
+                        }
+                        else PlaySelectedIndex(_lastIndex);
                     }
                     else
                     {
@@ -80,7 +87,13 @@ namespace Project3_MultimediaPlayer
                             _lastIndex = random.Next(_fullPaths.Count());
                         }
                         //  else _lastIndex = 0;
-                        PlaySelectedIndex(_lastIndex);
+                        if (_player.Position.TotalSeconds > 0)
+                        {
+                            _player.Play();
+                            _isPlaying = true;
+                            _timer.Start();
+                        }
+                        else PlaySelectedIndex(_lastIndex);
                     }
                 }
             }
@@ -90,18 +103,22 @@ namespace Project3_MultimediaPlayer
             }
         }
 
-
-        private void PlaySelectedIndex(int i)
+        private void LoadDetailSong(int i)
         {
             try
             {
                 string filename = _fullPaths[i].FullName;
-                _player.Open(new Uri(filename, UriKind.Absolute));
-
-                //shortname = shortname.Substring(shortname.LastIndexOf("\\") + 1);
                 var detailsong = TagLib.File.Create(filename);
                 var artists = detailsong.Tag.Artists;
                 //var picture = detailsong.Tag.Pictures[0];
+                string artist = "";
+                foreach (var item in artists)
+                {
+                    artist = artist + item + " ";
+                }
+
+                nameofSong.Content = _fullPaths[i].Name;
+                nameofArtist.Content = artist;
                 try
                 {
                     var image = detailsong.Tag.Pictures[0];
@@ -117,15 +134,23 @@ namespace Project3_MultimediaPlayer
                 {
                     imageofSong.Source = new BitmapImage(new Uri(@"/Images/compact-disc.png", UriKind.Relative));
                 }
+                timeNow.Content = _player.Position.ToString(@"mm\:ss");
+                totalTime.Content = detailsong.Properties.Duration.ToString(@"mm\:ss");
+                progessMusic.Minimum = 0;
+                progessMusic.Maximum = detailsong.Properties.Duration.TotalSeconds;
+            }
+            catch
+            { }
+        }
 
-                string artist = "";
-                foreach (var item in artists)
-                {
-                    artist = artist + item + " ";
-                }
+        private void PlaySelectedIndex(int i)
+        {
+            try
+            {
+                string filename = _fullPaths[i].FullName;
+                _player.Open(new Uri(filename, UriKind.Absolute));
 
-                nameofSong.Content = _fullPaths[i].Name;
-                nameofArtist.Content = artist;
+                LoadDetailSong(i);
                 _player.Play();
                 _isPlaying = true;
                 _timer.Start();
@@ -225,7 +250,7 @@ namespace Project3_MultimediaPlayer
         private void timer_Tick(object sender, EventArgs e)
         {
             //await Task.Run(() => _player.NaturalDuration.TimeSpan);
-            if (_player.Source != null && _player.NaturalDuration.HasTimeSpan)
+            if (_player.Source != null)
             {
                 var filename = _fullPaths[_lastIndex].Name;
                 //var converter = new NameConverter();
@@ -236,12 +261,12 @@ namespace Project3_MultimediaPlayer
 
 
                 progessMusic.Minimum = 0;
-                progessMusic.Maximum = _player.NaturalDuration.TimeSpan.TotalSeconds;
+                //progessMusic.Maximum = _player.NaturalDuration.TimeSpan.TotalSeconds;
                 progessMusic.Value = currentPos;
 
 
                 timeNow.Content = _player.Position.ToString(@"mm\:ss");
-                totalTime.Content = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+                //totalTime.Content = _player.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
             }
         }
 
@@ -301,8 +326,20 @@ namespace Project3_MultimediaPlayer
             {
                 var filename = "playlist.txt";
                 StreamReader reader = new StreamReader(filename);
+                RepeatMode = int.Parse(reader.ReadLine());
+                if(RepeatMode == 1)
+                {
+                    repeatImage.Source =new BitmapImage(new Uri(@"/Images/repeat1.png", UriKind.Relative));
+                }
+                ShuffleMode = int.Parse(reader.ReadLine());
+                if(ShuffleMode == 1)
+                {
+                    shuffleImage.Source = new BitmapImage(new Uri(@"/Images/shuffle1.png", UriKind.Relative));
+                }
                 int currentPlayIndex = int.Parse(reader.ReadLine());
                 _lastIndex = currentPlayIndex;
+                var pos = int.Parse(reader.ReadLine());
+                
                 string line = reader.ReadLine();
                 while (line != null)
                 {
@@ -313,10 +350,20 @@ namespace Project3_MultimediaPlayer
                 reader.Close();
                 playlistListBox.SelectedIndex = currentPlayIndex;
                 playlistListBox.ItemsSource = _fullPaths;
+                if (pos >= 0)
+                {
+                    _player.Open(new Uri(_fullPaths[_lastIndex].FullName, UriKind.Absolute));
+                    _player.Position = new TimeSpan(0, 0, pos);
+                    
+                    LoadDetailSong(_lastIndex);
+
+                    progessMusic.Value = pos;
+ 
+                }
             }
             catch
             {
-
+                MessageBox.Show("Loaded fail!");
             }
         }
 
@@ -339,6 +386,7 @@ namespace Project3_MultimediaPlayer
         {
             var filename = "playlist.txt";
             var writer = new StreamWriter(filename);
+            
 
             if (_fullPaths.Count > 0)
             {
@@ -346,7 +394,10 @@ namespace Project3_MultimediaPlayer
                 {
                     _lastIndex = 0;
                 }
+                writer.WriteLine(RepeatMode);
+                writer.WriteLine(ShuffleMode);
                 writer.WriteLine(_lastIndex);
+                writer.WriteLine((int)_player.Position.TotalSeconds);
                 foreach (var item in _fullPaths)
                 {
                     writer.WriteLine(item);
@@ -369,7 +420,7 @@ namespace Project3_MultimediaPlayer
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
             PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/play.png", UriKind.Relative));
-            firtTimePlay = true;
+            firstTimePlay = true;
             _player.Stop();
         }
 
@@ -483,7 +534,7 @@ namespace Project3_MultimediaPlayer
                 }
                 catch
                 {
-                    MessageBox.Show("Make sure you open correct your playlist", "Cant load you playlist");
+                    MessageBox.Show("Make sure you open correct your playlist", "Cant load your playlist");
                 }
             }
         }
