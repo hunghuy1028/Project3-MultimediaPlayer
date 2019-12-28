@@ -101,7 +101,7 @@
                 <Label Margin="0 1 0 0" Content="00:00" DockPanel.Dock="Left" x:Name="timeNow"></Label>
                 <Label Margin="0 1 0 0" Content="05:00" DockPanel.Dock="Right" x:Name="totalTime"></Label>
                 <Slider Margin="10 5 10 5" x:Name="progessMusic"
-                        Thumb.DragCompleted="progessMusic_DragCompleted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
+                        Thumb.DragCompleted="progessMusic_DragCompleted" Thumb.DragStarted="progessMusic_DragStarted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
             </DockPanel>
         </Grid>
     </Grid>
