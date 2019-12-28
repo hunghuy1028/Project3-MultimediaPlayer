@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using TagLib;
+using System.Windows.Media.Animation;
 
 namespace Project3_MultimediaPlayer
 {
@@ -63,6 +64,7 @@ namespace Project3_MultimediaPlayer
         bool firstTimePlay = true;
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
+            SB.Begin();
             if (playlistListBox.SelectedIndex != _lastIndex || firstTimePlay == true)
             {
                 firstTimePlay = false;
@@ -284,11 +286,13 @@ namespace Project3_MultimediaPlayer
         {
             if (_isPlaying)
             {
+                SB.Pause();
                 _player.Pause();
                 PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/play.png", UriKind.Relative));
             }
             else
             {
+                SB.Resume();
                 _player.Play();
                 PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));
             }
@@ -327,9 +331,10 @@ namespace Project3_MultimediaPlayer
                 playlistListBox.ItemsSource = _fullPaths;
             }
         }
-
+        Storyboard SB;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+             SB= (Storyboard)FindResource("Storyboard");
             try
             {
                 var filename = "playlist.txt";
@@ -392,6 +397,8 @@ namespace Project3_MultimediaPlayer
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            
+            
             var filename = "playlist.txt";
             var writer = new StreamWriter(filename);
             
@@ -425,9 +432,13 @@ namespace Project3_MultimediaPlayer
                 _player_MediaEnded(sender, e);
             }
         }
-
+        
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
+           
+            SB.Stop();
+
+            
             PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/play.png", UriKind.Relative));
             firstTimePlay = true;
             _player.Stop();

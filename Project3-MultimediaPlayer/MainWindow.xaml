@@ -9,8 +9,22 @@
         Closed="Window_Closed"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
+        <Storyboard x:Key="Storyboard">
+            <DoubleAnimation Storyboard.TargetName="imageofSong" 
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" 
+                             From="0" To="360" Duration="0:0:10"  RepeatBehavior="Forever" />
+        </Storyboard>
         <local:NameConverter x:Key="converter"/>
     </Window.Resources>
+    <!--<Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click">
+            <BeginStoryboard x:Name="myStory" Storyboard="{StaticResource Storyboard}">
+        </BeginStoryboard>
+    </EventTrigger>
+        --><!--<EventTrigger RoutedEvent="ButtonBase.Click">
+        <PauseStoryboard x:Name="pauseStory" BeginStoryboardName="myStory"/>
+    </EventTrigger>--><!--
+    </Window.Triggers>-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
@@ -51,8 +65,18 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Image Margin="10 10 10 10" Grid.Column="2" Grid.Row="1" x:Name="imageofSong"
-               Source="Images/compact-disc.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+        <Image Width="270" Height="270" Margin="10 10 10 10" Grid.Column="2" Grid.Row="1" x:Name="imageofSong"
+               Source="Images/compact-disc.png" RenderOptions.BitmapScalingMode="HighQuality">
+            <Image.RenderTransform>
+                <RotateTransform Angle="0" CenterX="135" CenterY="135" />
+            </Image.RenderTransform>
+            <Image.OpacityMask>
+                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                    <GradientStop Color="#ffffffff" Offset="1" />
+                    <GradientStop Color="#00ffffff" Offset="1" />
+                </RadialGradientBrush>
+            </Image.OpacityMask>
+        </Image>
 
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
