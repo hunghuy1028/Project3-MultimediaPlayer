@@ -124,10 +124,10 @@
     <Resource Include="Images\forward.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\repeat1.png" />
+    <Resource Include="Images\shuffle1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\shuffle1.png" />
+    <Resource Include="Images\repeat1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

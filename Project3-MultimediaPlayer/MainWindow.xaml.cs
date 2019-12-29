@@ -573,6 +573,16 @@ namespace Project3_MultimediaPlayer
 
         private void playlistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            playlistListBox.Dispatcher.BeginInvoke(
+                    (Action)(() =>
+                    {
+                        playlistListBox.UpdateLayout();
+                        if (playlistListBox.SelectedItem !=
+                            null)
+                            playlistListBox.ScrollIntoView(
+                                playlistListBox.SelectedItem);
+                    }));
+
             if (_isPlaying)
             {
                 PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));
@@ -651,8 +661,31 @@ namespace Project3_MultimediaPlayer
             if (srcType == typeof(System.Windows.Controls.ListBoxItem) || srcType == typeof(GridViewRowPresenter))
             {
                 PlaySelectedIndex(playlistListBox.SelectedIndex);
+                _lastIndex = playlistListBox.SelectedIndex;
             }
            
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+            var selectedIndex = playlistListBox.SelectedIndex;
+            if (selectedIndex != _lastIndex)
+            {
+                if (selectedIndex < _lastIndex)
+                {
+                    _lastIndex--;
+                    _fullPaths.Remove(_fullPaths[selectedIndex]);
+                }
+                else
+                {
+                    _fullPaths.Remove(_fullPaths[selectedIndex]);
+                }
+            }
+            else
+            {
+                MessageBox.Show("You cant remove a song is playing");
+            }
         }
     }
 }
