@@ -376,7 +376,7 @@ namespace Project3_MultimediaPlayer
             }
             catch
             {
-                MessageBox.Show("Loaded fail!");
+                //MessageBox.Show("Loaded fail!");
             }
         }
 
@@ -508,7 +508,7 @@ namespace Project3_MultimediaPlayer
                 Title = "Save text Files",
                 CheckPathExists = true,
                 DefaultExt = "txt",
-                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
+                Filter = "Text files (*.txt)|*.txt",
                 FilterIndex = 2,
                 RestoreDirectory = true,
             };
@@ -563,6 +563,7 @@ namespace Project3_MultimediaPlayer
                     }
                     reader.Close();
                     playlistListBox.SelectedIndex = currentPlayIndex;
+                    playlistListBox.ItemsSource = _fullPaths;
                 }
                 catch
                 {
