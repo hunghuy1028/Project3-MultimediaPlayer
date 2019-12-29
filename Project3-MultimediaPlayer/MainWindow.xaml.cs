@@ -643,6 +643,17 @@ namespace Project3_MultimediaPlayer
         {
             _isDragProgressBar = true;
         }
+
+        private void playlistListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var src = VisualTreeHelper.GetParent((DependencyObject)e.OriginalSource);
+            var srcType = src.GetType();
+            if (srcType == typeof(System.Windows.Controls.ListBoxItem) || srcType == typeof(GridViewRowPresenter))
+            {
+                PlaySelectedIndex(playlistListBox.SelectedIndex);
+            }
+           
+        }
     }
 }
 
