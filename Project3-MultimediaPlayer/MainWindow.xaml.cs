@@ -367,11 +367,8 @@ namespace Project3_MultimediaPlayer
                 {
                     _player.Open(new Uri(_fullPaths[_lastIndex].FullName, UriKind.Absolute));
                     _player.Position = new TimeSpan(0, 0, pos);
-                    
                     LoadDetailSong(_lastIndex);
-
                     progessMusic.Value = pos;
- 
                 }
             }
             catch
@@ -398,6 +395,7 @@ namespace Project3_MultimediaPlayer
             }
             if (e.Control && e.Shift && (e.KeyCode == Keys.Q)) //previous song
             {
+                
                 previous_Button_Click(sender, a);
             }
             if (e.Control && e.Shift && (e.KeyCode == Keys.W)) //stop
@@ -573,6 +571,16 @@ namespace Project3_MultimediaPlayer
 
         private void playlistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            playlistListBox.Dispatcher.BeginInvoke(
+                    (Action)(() =>
+                    {
+                        playlistListBox.UpdateLayout();
+                        if (playlistListBox.SelectedItem !=
+                            null)
+                            playlistListBox.ScrollIntoView(
+                                playlistListBox.SelectedItem);
+                    }));
+
             if (_isPlaying)
             {
                 PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));

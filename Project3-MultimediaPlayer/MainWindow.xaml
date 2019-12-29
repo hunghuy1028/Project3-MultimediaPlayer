@@ -57,7 +57,7 @@
             </Button>
         </StackPanel>
 
-        <ListBox Margin="5 5 5 5" Name="playlistListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Extended" SelectionChanged="playlistListBox_SelectionChanged" Grid.Row="1" Grid.Column="0">
+        <ListBox Margin="5 5 5 5" Name="playlistListBox" ScrollViewer.CanContentScroll="True" IsSynchronizedWithCurrentItem="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Extended" SelectionChanged="playlistListBox_SelectionChanged" Grid.Row="1" Grid.Column="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name, Converter={StaticResource converter}}"/>
