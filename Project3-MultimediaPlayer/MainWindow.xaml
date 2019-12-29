@@ -69,7 +69,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="8">
-                    <TextBlock  Text="{Binding Name, Converter={StaticResource converter}}"/>
+                        <TextBlock  Text="{Binding Name, Converter={StaticResource converter}}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
