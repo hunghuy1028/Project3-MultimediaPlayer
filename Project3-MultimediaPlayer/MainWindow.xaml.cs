@@ -604,7 +604,16 @@ namespace Project3_MultimediaPlayer
             }
         }
 
-        
+
+        private void information_Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("MP3 Music Player - 1712472: Lo Huy Hung - 1712555: Chau Vinh Lap\nKeyboard control:\n" +
+                "Next Song: Ctrl + Shift + A\n" +
+                "Previous Song: Ctrl + Shift + Q\n" +
+                "Play/Stop: Ctrl + Shift + S\n" +
+                "Stop: Ctrl + Shift +W", "Information");
+        }
+
         //Handled ProgressMusic
         private void progessMusic_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
@@ -683,6 +692,8 @@ namespace Project3_MultimediaPlayer
                 MessageBox.Show("You cant remove a song is playing");
             }
         }
+
+
     }
 }
 

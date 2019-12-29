@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:Project3_MultimediaPlayer"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
+        Icon="Images/appmusic.png"
         Closed="Window_Closed"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Music Player" Height="450" Width="800">
     <Window.Resources>
         <Storyboard x:Key="Storyboard">
             <DoubleAnimation Storyboard.TargetName="imageofSong" 
@@ -46,13 +47,19 @@
             <Button Name="AddPlayList_Button" Click="AddPlayList_Button_Click" Width="Auto" Height="Auto" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="Images/add.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-                    <Label Content="Add Playlist"></Label>
+                    <Label Content="Add to Playlist"></Label>
                 </StackPanel>
             </Button>
             <Button Name="LoadPlayList_Button" Click="LoadPlayList_Button_Click" Width="Auto" Height="Auto" >
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="Images/add.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    <Image Margin="5 0 0 0" Source="Images/document.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
                     <Label Content="Load Playlist"></Label>
+                </StackPanel>
+            </Button>
+            <Button Name="information_Button" Click="information_Button_Click" Width="Auto" Height="Auto" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Margin="5 0 0 0" Source="Images/info.png" Width="25" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    <Label Content="Infomation"></Label>
                 </StackPanel>
             </Button>
         </StackPanel>
