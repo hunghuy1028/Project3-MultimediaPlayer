@@ -667,8 +667,9 @@ namespace Project3_MultimediaPlayer
             {
                 SB.Begin();
                 PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));
-                _isPlaying = true;
                 PlaySelectedIndex(playlistListBox.SelectedIndex);
+                _isPlaying = true;
+                firstTimePlay = false;
                 _lastIndex = playlistListBox.SelectedIndex;
             }
 
