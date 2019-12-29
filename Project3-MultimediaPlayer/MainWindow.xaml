@@ -68,8 +68,9 @@
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Margin="8" Text="{Binding Name, Converter={StaticResource converter}}"/>
-
+                    <StackPanel Margin="8">
+                    <TextBlock  Text="{Binding Name, Converter={StaticResource converter}}"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -132,7 +133,7 @@
 
             <DockPanel LastChildFill="True" Grid.Row="1" Grid.Column="2">
                 <Label Margin="0 1 0 0" Content="00:00" DockPanel.Dock="Left" x:Name="timeNow"></Label>
-                <Label Margin="0 1 0 0" Content="05:00" DockPanel.Dock="Right" x:Name="totalTime"></Label>
+                <Label Margin="0 1 0 0"  Content="      " DockPanel.Dock="Right" x:Name="totalTime"></Label>
                 <Slider Margin="10 5 10 5" x:Name="progessMusic"
                         Thumb.DragCompleted="progessMusic_DragCompleted" Thumb.DragStarted="progessMusic_DragStarted" MouseLeftButtonUp="progessMusic_MouseLeftButtonUp" IsMoveToPointEnabled="True"></Slider>
             </DockPanel>

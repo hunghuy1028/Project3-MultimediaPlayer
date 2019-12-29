@@ -64,47 +64,53 @@ namespace Project3_MultimediaPlayer
         bool firstTimePlay = true;
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            SB.Begin();
-            if (playlistListBox.SelectedIndex != _lastIndex || firstTimePlay == true)
+            if (_fullPaths.Count > 0)
             {
-                firstTimePlay = false;
-                _previousList.Push(_lastIndex);
-                PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));
-                if (_fullPaths.Count() > 0)
-                {
-                    if (playlistListBox.SelectedIndex >= 0)
-                    {
-                        _lastIndex = playlistListBox.SelectedIndex;
-                        if (_player.Position.TotalSeconds > 0)
-                        {
-                            _player.Play();
-                            _isPlaying = true;
-                            _timer.Start();
 
-                        }
-                        else PlaySelectedIndex(_lastIndex);
-                    }
-                    else
+                if (playlistListBox.SelectedIndex != _lastIndex || firstTimePlay == true)
+                {
+                    firstTimePlay = false;
+                    _previousList.Push(_lastIndex);
+                    PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));
+                    if (_fullPaths.Count() > 0)
                     {
-                        if (ShuffleMode == 1)
+                        SB.Begin();
+                        playlistListBox.SelectedIndex = _lastIndex;
+                        if (playlistListBox.SelectedIndex >= 0)
                         {
-                            var random = new Random();
-                            _lastIndex = random.Next(_fullPaths.Count());
+                            _lastIndex = playlistListBox.SelectedIndex;
+                            if (_player.Position.TotalSeconds > 0)
+                            {
+                                _player.Play();
+                                _isPlaying = true;
+                                _timer.Start();
+
+                            }
+                            else PlaySelectedIndex(_lastIndex);
                         }
-                        //  else _lastIndex = 0;
-                        if (_player.Position.TotalSeconds > 0)
+                        else
                         {
-                            _player.Play();
-                            _isPlaying = true;
-                            _timer.Start();
+                            if (ShuffleMode == 1)
+                            {
+                                var random = new Random();
+                                _lastIndex = random.Next(_fullPaths.Count());
+                            }
+                            //  else _lastIndex = 0;
+                            if (_player.Position.TotalSeconds > 0)
+                            {
+                                _player.Play();
+                                _isPlaying = true;
+                                _timer.Start();
+                            }
+                            else PlaySelectedIndex(_lastIndex);
                         }
-                        else PlaySelectedIndex(_lastIndex);
                     }
                 }
-            }
-            else
-            {
-                pause();
+                else
+                {
+                    pause();
+                }
+
             }
         }
 
@@ -154,7 +160,7 @@ namespace Project3_MultimediaPlayer
             {
                 string filename = _fullPaths[i].FullName;
                 _player.Open(new Uri(filename, UriKind.Absolute));
-                
+
 
                 LoadDetailSong(i);
                 _player.Play();
@@ -173,7 +179,7 @@ namespace Project3_MultimediaPlayer
         {
             int i = PlayNextSong(_lastIndex);
             _lastIndex = i;
-            
+
             PlaySelectedIndex(i);
             _previousList.Push(_lastIndex);
         }
@@ -207,7 +213,7 @@ namespace Project3_MultimediaPlayer
                 if (ShuffleMode == 1)
                 {
                     _playedList.Add(currentPlay);
-                    
+
 
                     if (_playedList.Count() == _fullPaths.Count())
                     {
@@ -334,25 +340,25 @@ namespace Project3_MultimediaPlayer
         Storyboard SB;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-             SB= (Storyboard)FindResource("Storyboard");
+            SB = (Storyboard)FindResource("Storyboard");
             try
             {
                 var filename = "playlist.txt";
                 StreamReader reader = new StreamReader(filename);
                 RepeatMode = int.Parse(reader.ReadLine());
-                if(RepeatMode == 1)
+                if (RepeatMode == 1)
                 {
-                    repeatImage.Source =new BitmapImage(new Uri(@"/Images/repeat1.png", UriKind.Relative));
+                    repeatImage.Source = new BitmapImage(new Uri(@"/Images/repeat1.png", UriKind.Relative));
                 }
                 ShuffleMode = int.Parse(reader.ReadLine());
-                if(ShuffleMode == 1)
+                if (ShuffleMode == 1)
                 {
                     shuffleImage.Source = new BitmapImage(new Uri(@"/Images/shuffle1.png", UriKind.Relative));
                 }
                 int currentPlayIndex = int.Parse(reader.ReadLine());
                 _lastIndex = currentPlayIndex;
                 var pos = int.Parse(reader.ReadLine());
-                
+
                 string line = reader.ReadLine();
                 while (line != null)
                 {
@@ -367,11 +373,11 @@ namespace Project3_MultimediaPlayer
                 {
                     _player.Open(new Uri(_fullPaths[_lastIndex].FullName, UriKind.Absolute));
                     _player.Position = new TimeSpan(0, 0, pos);
-                    
+
                     LoadDetailSong(_lastIndex);
 
                     progessMusic.Value = pos;
- 
+
                 }
             }
             catch
@@ -408,11 +414,11 @@ namespace Project3_MultimediaPlayer
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            
-            
+
+
             var filename = "playlist.txt";
             var writer = new StreamWriter(filename);
-            
+
 
             if (_fullPaths.Count > 0)
             {
@@ -439,17 +445,17 @@ namespace Project3_MultimediaPlayer
             if (_fullPaths.Count() > 0 && _lastIndex != -1)
             {
                 _isPlaying = true;
-                
+
                 _player_MediaEnded(sender, e);
             }
         }
-        
+
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-           
+
             SB.Stop();
 
-            
+
             PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/play.png", UriKind.Relative));
             firstTimePlay = true;
             _player.Stop();
@@ -598,9 +604,9 @@ namespace Project3_MultimediaPlayer
         {
             if (_fullPaths.Count() > 0 && _lastIndex != -1)
             {
-                
+
                 _isPlaying = true;
-               
+
                 int i = PlayPreviousSong(_lastIndex);
                 _lastIndex = i;
 
@@ -614,7 +620,7 @@ namespace Project3_MultimediaPlayer
 
             if (RepeatMode == 1) // repeat 1 song
             {
-               
+
                 return currentPlay;
             }
 
@@ -625,10 +631,10 @@ namespace Project3_MultimediaPlayer
                 {
                     if (nextsong < 0)
                     {
-                        nextsong = _fullPaths.Count()-1;
+                        nextsong = _fullPaths.Count() - 1;
                     }
                 }
-                
+
             }
             else // shuffle
             {
@@ -642,7 +648,7 @@ namespace Project3_MultimediaPlayer
                     }
                     else
                     {
-                       nextsong = PlayNextSong(currentPlay);
+                        nextsong = PlayNextSong(currentPlay);
                     }
                 }
             }
@@ -659,12 +665,12 @@ namespace Project3_MultimediaPlayer
         {
             var src = VisualTreeHelper.GetParent((DependencyObject)e.OriginalSource);
             var srcType = src.GetType();
-            if (srcType == typeof(System.Windows.Controls.ListBoxItem) || srcType == typeof(GridViewRowPresenter))
+            if (srcType == typeof(System.Windows.Controls.ListBoxItem) || srcType == typeof(GridViewRowPresenter) || srcType == typeof(StackPanel))
             {
                 PlaySelectedIndex(playlistListBox.SelectedIndex);
                 _lastIndex = playlistListBox.SelectedIndex;
             }
-           
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
