@@ -665,6 +665,9 @@ namespace Project3_MultimediaPlayer
             var srcType = src.GetType();
             if (srcType == typeof(System.Windows.Controls.ListBoxItem) || srcType == typeof(GridViewRowPresenter) || srcType == typeof(StackPanel))
             {
+                SB.Begin();
+                PlayPause_Image.Source = new BitmapImage(new Uri(@"/Images/pause.png", UriKind.Relative));
+                _isPlaying = true;
                 PlaySelectedIndex(playlistListBox.SelectedIndex);
                 _lastIndex = playlistListBox.SelectedIndex;
             }
