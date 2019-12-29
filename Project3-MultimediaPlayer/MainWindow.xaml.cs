@@ -651,6 +651,12 @@ namespace Project3_MultimediaPlayer
         {
             _isDragProgressBar = true;
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = playlistListBox.SelectedItems;
+
+        }
     }
 }
 

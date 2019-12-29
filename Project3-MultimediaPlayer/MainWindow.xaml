@@ -58,17 +58,22 @@
         </StackPanel>
 
         <ListBox Margin="5 5 5 5" Name="playlistListBox" ScrollViewer.CanContentScroll="True" IsSynchronizedWithCurrentItem="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Extended" SelectionChanged="playlistListBox_SelectionChanged" Grid.Row="1" Grid.Column="0">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete" Click="MenuItem_Click"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name, Converter={StaticResource converter}}"/>
+                    <TextBlock Margin="7" Text="{Binding Name, Converter={StaticResource converter}}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Image Width="270" Height="270" Margin="10 10 10 10" Grid.Column="2" Grid.Row="1" x:Name="imageofSong"
+        <Image RenderTransformOrigin="0.5,0.5" Margin="10 10 10 10" Grid.Column="2" Grid.Row="1" x:Name="imageofSong"
                Source="Images/compact-disc.png" RenderOptions.BitmapScalingMode="HighQuality">
             <Image.RenderTransform>
-                <RotateTransform Angle="0" CenterX="135" CenterY="135" />
+                <RotateTransform Angle="0"/>
             </Image.RenderTransform>
             <Image.OpacityMask>
                 <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
